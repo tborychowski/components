@@ -27,6 +27,7 @@ const template = `<div class="tree">
 			<select name="parentId"></select>
 			<input name="name">
 			<button class="btn-save">Save</button>
+			<button type="button" class="btn-del">Del</button>
 		</form>
 		<button class="btn-new">New</button>
 	</div>
@@ -34,7 +35,7 @@ const template = `<div class="tree">
 </div>`;
 
 
-class perfectCalendar extends HTMLElement {
+class perfectTree extends HTMLElement {
 
 	constructor () {
 		super();
@@ -57,7 +58,7 @@ class perfectCalendar extends HTMLElement {
 		this.formEl.addEventListener('submit', this.onSubmit.bind(this));
 	}
 
-	attributeChangedCallback(name, oldVal, newVal) {
+	attributeChangedCallback (name, oldVal, newVal) {
 		if (name === 'edit') {
 			this.el.classList.toggle('edit', newVal !== null);
 		}
@@ -75,12 +76,20 @@ class perfectCalendar extends HTMLElement {
 	get data () { return this._data; }
 
 	set data (data) {
-		if (Array.isArray(data)) this._data = data;
-		else this._data = this.flatten(data);
-
-		this.deflatten(this._data);
-
+		if (this.isTree(data)) this._data = this.treeToArray(data);
+		else this._data = data;
 		this.render();
+	}
+
+
+	sort () {
+		this._data.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+	}
+
+	isTree (data) {
+		if (!Array.isArray(data) || !data.length) return true;
+		for (let i in data) if (data[i].items) return true;
+		return false;
 	}
 
 
@@ -102,40 +111,39 @@ class perfectCalendar extends HTMLElement {
 
 
 	render () {
-		this.treeEl.innerHTML = this.createTree(this.deflatten(this._data));
-		this.formEl.parentId.innerHTML = this._data
-			.map(o => `<option value="${o.id}">${o.name}</option>`);
+		this.sort();
+		this.treeEl.innerHTML = this.createTree(this.arrayToTree(this._data));
+
+		let html = '<option></option>';
+		html += this._data.map(o => `<option value="${o.id}">${o.name}</option>`).join('');
+		this.formEl.parentId.innerHTML = html;
 	}
 
 
 	// tree object ==> flat array
-	flatten  (data) {
-		let res = [];
+	treeToArray (data) {
+		const res = [];
 		if (!Array.isArray(data)) data = [data];
-		data.forEach(d => {
-			res.push({ id: d.id, name: d.name, parentId: d.parentId });
-			if (d.items) res = res.concat(this.flatten(d.items));
+		data.forEach(item => {
+			const itemCopy = Object.assign({}, item);
+			delete itemCopy.items;
+			res.push(itemCopy);
+			if (item.items) res.push(...this.treeToArray(item.items));
 		});
 		return res;
 	}
 
 	// flat array ==> tree
-	deflatten  (data, parentId) {
+	arrayToTree (data, parentId = '') {
 		let res = data
-			.filter(i => i.parentId === parentId)
-			.map(i => {
-				const items = this.deflatten(data, i.id);
-				if (items.length) i.items = items;
-				return i;
+			.filter(i => (i.parentId || '') === parentId)
+			.map(item => {
+				const items = this.arrayToTree(data, item.id);
+				const newItem = Object.assign({}, item);
+				if (items.length) newItem.items = items;
+				return newItem;
 			});
-		return res.length === 1 && !parentId ? res[0] : res;
-	}
-
-
-	editCategory(el, data) {
-		this.formEl.id.value = data.id;
-		this.formEl.name.value = data.name;
-		this.formEl.parentId.value = data.parentId;
+		return res;
 	}
 
 
@@ -143,6 +151,35 @@ class perfectCalendar extends HTMLElement {
 		this.formEl.reset();
 		this.formEl.id.value = '';
 	}
+
+	addCategory (data) {
+		const item = Object.assign({}, data);
+		if (!data.id) item.id = data.name;
+		this._data.push(item);
+		return item;
+	}
+
+	modifyCategory (id, newData) {
+		const item = this._data.find(i => i.id === id);
+		if (item) Object.assign(item, newData);
+		return item;
+	}
+
+	editCategory (el, data) {
+		this.formEl.id.value = data.id;
+		this.formEl.name.value = data.name;
+		this.formEl.parentId.value = data.parentId;
+	}
+
+	deleteCategory (id) {
+		if (!id) return;
+		const item = this._data.find(i => i.id === id);
+		const data = this._data.filter(i => i.id !== id && i.parentId !== id);
+		this.resetForm();
+		this.data = data;
+		this.fireEvent('edit', { action: 'delete', item });
+	}
+
 
 	onSubmit (e) {
 		e.preventDefault();
@@ -152,20 +189,11 @@ class perfectCalendar extends HTMLElement {
 			name: this.formEl.name.value,
 		};
 
-		let item;
-		if (data.id) {
-			item = this._data.find(i => i.id === data.id);
-			Object.assign(item, data);
-		}
-		else {
-			item = Object.assign({}, data);
-			item.id = data.name;
-			this._data.push(item);
-		}
-
+		if (!data.name) return;
+		const item = data.id ? this.modifyCategory(data.id, data) : this.addCategory(data);
 		this.resetForm();
 		this.render();
-		this.dispatchEvent(new CustomEvent('save', { detail: item }));
+		this.fireEvent('edit', { action: (data.id ? 'update' : 'add'), item });
 	}
 
 	onClick (e) {
@@ -177,19 +205,22 @@ class perfectCalendar extends HTMLElement {
 			e.preventDefault();
 			const detail = Object.assign({}, data);
 			if (this.edit) return this.editCategory(cat, detail);
-			return this.dispatchEvent(new CustomEvent('change', { detail }));
+			return this.fireEvent('select', detail);
 		}
 
-		const editOn = target.closest('.edit-on');
-		if (editOn) return this.edit = true;
+		if (target.closest('.edit-on')) return this.edit = true;
+		if (target.closest('.edit-off')) return this.edit = false;
+		if (target.closest('.btn-new')) return this.resetForm();
+		if (target.closest('.btn-del')) {
+			const id = target.closest('form').elements.id.value;
+			return this.deleteCategory(id);
+		}
+	}
 
-		const editOff = target.closest('.edit-off');
-		if (editOff) return this.edit = false;
-
-		const btnNew = target.closest('.btn-new');
-		if (btnNew) return this.resetForm();
+	fireEvent (name, detail) {
+		this.dispatchEvent(new CustomEvent(name, { detail }));
 	}
 
 }
 
-customElements.define('perfect-tree', perfectCalendar);
+customElements.define('perfect-tree', perfectTree);

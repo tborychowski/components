@@ -20,31 +20,23 @@ function init () {
 	console.log('components ready!');
 	const el = document.getElementsByTagName('perfect-tree')[0];
 
-	el.data = {
-		name: 'Tree',
-		id: 'root',
-		items: [
-			{ id: 'child_1', name: 'Child 1', parentId: 'root' },
-			{ id: 'child_2', name: 'Child 2', parentId: 'root', items: [
-				{ id: 'grandchild_21', name: 'Grandchild 1', parentId: 'child_2' },
-			]},
-			{ id: 'child_3', name: 'Child 3', parentId: 'root', items: [
-				{ id: 'grandchild_31', name: 'Grandchild 1', parentId: 'child_3' },
-				{ id: 'grandchild_32', name: 'Grandchild 2', parentId: 'child_3' },
-				{ id: 'grandchild_33', name: 'Grandchild 3', parentId: 'child_3' },
-			]},
-		]
-	};
+	el.data = [
+		{ id: 'child_1', name: 'Child 1' },
+		{ id: 'child_2', name: 'Child 2', items: [
+			{ id: 'grandchild_21', name: 'Grandchild 1', parentId: 'child_2' },
+		]},
+		{ id: 'child_3', name: 'Child 3', items: [
+			{ id: 'grandchild_31', name: 'Grandchild 1', parentId: 'child_3' },
+			{ id: 'grandchild_32', name: 'Grandchild 2', parentId: 'child_3' },
+			{ id: 'grandchild_33', name: 'Grandchild 3', parentId: 'child_3' },
+		]},
+	];
 
-	el.addEventListener('change', e => {
-		console.log('change', e.detail);
-	});
-	el.addEventListener('save', e => {
-		console.log('save', e.detail);
-	});
+	el.addEventListener('select', e => {console.log('select', e.detail); });
+	el.addEventListener('edit', e => {console.log('edit', e.detail); });
 }
 if (window.WebComponents.ready) init();
-else window.addEventListener('WebComponentsReady', () => setTimeout(init, 10));
+else window.addEventListener('WebComponentsReady', () => setTimeout(init, 100));
 </script>
 
 </body>
