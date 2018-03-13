@@ -64,7 +64,7 @@
 	// Lazy load the polyfill if necessary.
 	if (!supportsShadowDOMV1) {
 		window.addEventListener('WebComponentsReady', init);
-		loadScript('./node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js')
+		loadScript('../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js')
 			.then(() => {
 				console.log('polyfils loaded!');
 			});
