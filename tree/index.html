@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Tree demo</title>
+<style>
+body { transition: opacity .3s ease-out; opacity: 0; }
+</style>
+</head>
+<body>
+
+
+<perfect-tree></perfect-tree>
+
+
+<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+<script src="index.js" type="module"></script>
+<script>
+function init () {
+	document.body.style.opacity = 1;
+	console.log('components ready!');
+	const el = document.getElementsByTagName('perfect-tree')[0];
+
+	el.data = {
+		name: 'Tree',
+		id: 'root',
+		items: [
+			{ id: 'child_1', name: 'Child 1', parentId: 'root' },
+			{ id: 'child_2', name: 'Child 2', parentId: 'root', items: [
+				{ id: 'grandchild_21', name: 'Grandchild 1', parentId: 'child_2' },
+			]},
+			{ id: 'child_3', name: 'Child 3', parentId: 'root', items: [
+				{ id: 'grandchild_31', name: 'Grandchild 1', parentId: 'child_3' },
+				{ id: 'grandchild_32', name: 'Grandchild 2', parentId: 'child_3' },
+				{ id: 'grandchild_33', name: 'Grandchild 3', parentId: 'child_3' },
+			]},
+		]
+	};
+
+	el.addEventListener('change', e => {
+		console.log('change', e.detail);
+	});
+	el.addEventListener('save', e => {
+		console.log('save', e.detail);
+	});
+}
+if (window.WebComponents.ready) init();
+else window.addEventListener('WebComponentsReady', () => setTimeout(init, 10));
+</script>
+
+</body>
+</html>

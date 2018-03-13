@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8">
+	<style>
+		x-drops { font: 100% sans-serif; }
+		x-drops::shadow .item-name { display: block; color: #009; }
+		x-drops::shadow .selected .item-name { color: #fff; }
+		x-drops::shadow .item-sub { display: block; color: #999; }
+	</style>
+	<link rel="import" href="x-drops.html"/>
+</head>
+<body>
+
+<x-drops max-height="6" search-in-fields="name, subtext" value="123"></x-drops>
+<x-drops max-height="5" search-in-fields="name" value="item 5"></x-drops>
+
+
+<script>
+(function() {
+	function loadScript (src) {
+		return new Promise(function(resolve, reject) {
+			const script = document.createElement('script');
+			script.async = true;
+			script.src = src;
+			script.onload = resolve;
+			script.onerror = reject;
+			document.head.appendChild(script);
+		});
+	}
+
+	const data = [
+		{ id: 0, name: 'item 0', subtext: 'subtext for item 0' },
+		{ id: 1, name: 'item 1', subtext: 'subtext for item 1' },
+		{ id: 2, name: 'item 2', subtext: 'subtext for item 2' },
+		{ id: 3, name: 'item 3', subtext: 'subtext for item 3' },
+		{ id: 4, name: 'item 4', subtext: 'subtext for item 4' },
+		{ id: 5, name: 'item 5', subtext: 'subtext for item 5' },
+		{ id: 6, name: 'item 6', subtext: 'subtext for item 6' },
+		{ id: 7, name: 'item 7', subtext: 'subtext for item 7' },
+		{ id: 8, name: 'item 8', subtext: 'subtext for item 8' },
+		{ id: 9, name: 'item 9', subtext: 'subtext for item 9' },
+	];
+
+	function init () {
+		console.log('init');
+		document.querySelectorAll('x-drops').forEach(dr => {
+			dr.dataSrc = (/*query*/) => Promise.resolve(data);
+			dr.itemRenderer = ({name, subtext, highlighted}) => {
+				if (highlighted) {
+					if (highlighted.name) name = highlighted.name;
+					if (highlighted.subtext) subtext = highlighted.subtext;
+				}
+				return `<div class="item-name">${name}</div><span class="item-sub">${subtext}</span>`;
+			};
+			dr.addEventListener('change', ev => {
+				console.log(ev.type, ev.target.value, ev);
+			});
+			dr.select();
+		});
+	}
+
+	const supportsShadowDOMV1 = 'registerElement' in document && 'import' in document.createElement('link') && 'content' in document.createElement('template');
+
+	// Lazy load the polyfill if necessary.
+	if (!supportsShadowDOMV1) {
+		window.addEventListener('WebComponentsReady', init);
+		loadScript('./node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js')
+			.then(() => {
+				console.log('polyfils loaded!');
+			});
+	}
+	// Native shadow dom v1 support. Good to go!
+	else init();
+
+})();
+</script>
+</body>

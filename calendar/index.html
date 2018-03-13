@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Calendar demo</title>
+<style>
+perfect-calendar { width: 280px; font-size: 12px; font-family: sans-serif; }
+</style>
+</head>
+<body>
+
+
+<perfect-calendar></perfect-calendar>
+
+
+<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+<script src="index.js" type="module"></script>
+<script>
+function init () {
+	console.log('components ready!');
+	const cal = document.getElementsByTagName('perfect-calendar')[0];
+	cal.addEventListener('change', e => {
+		console.log(e.detail);
+	});
+}
+if (window.WebComponents.ready) init();
+else window.addEventListener('WebComponentsReady', init);
+</script>
+
+</body>
+</html>

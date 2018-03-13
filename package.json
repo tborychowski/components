@@ -1,0 +1,16 @@
+{
+  "name": "perfect-components",
+  "version": "1.0.0",
+  "description": "web components",
+  "scripts": { },
+  "author": "Tom",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tborychowski/components.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^1.1.0"
+  }
+}

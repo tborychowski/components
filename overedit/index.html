@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+
+	<div id="file">some file name.txt</div>
+
+<script src="index.js"></script>
+<script>
+(function () {
+	const editor = window.Overedit('#file');
+	editor.on('save', nv => {
+		console.log('new value: ', nv);
+	});
+
+})();
+</script>
+</body>
