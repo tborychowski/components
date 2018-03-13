@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Tree demo</title>
+<style>
+body { transition: opacity .3s ease-out; opacity: 0; }
+year-picker { width: 100px;  }
+</style>
+</head>
+<body>
+
+
+<year-picker></year-picker>
+
+
+<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+<script src="index.js" type="module"></script>
+<script>
+function init () {
+	document.body.style.opacity = 1;
+	console.log('components ready!');
+
+	const el = document.getElementsByTagName('year-picker')[0];
+
+	el.addEventListener('change', e => { console.log(e.type, e.detail); });
+}
+if (window.WebComponents.ready) init();
+else window.addEventListener('WebComponentsReady', () => setTimeout(init, 100));
+</script>
+
+</body>
+</html>

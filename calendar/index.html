@@ -19,7 +19,7 @@ function init () {
 	console.log('components ready!');
 	const cal = document.getElementsByTagName('perfect-calendar')[0];
 	cal.addEventListener('change', e => {
-		console.log(e.detail);
+		console.log(e.type, e.detail);
 	});
 }
 if (window.WebComponents.ready) init();

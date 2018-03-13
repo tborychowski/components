@@ -32,8 +32,8 @@ function init () {
 		]},
 	];
 
-	el.addEventListener('select', e => {console.log('select', e.detail); });
-	el.addEventListener('edit', e => {console.log('edit', e.detail); });
+	el.addEventListener('select', e => {console.log(e.type, e.detail); });
+	el.addEventListener('edit', e => {console.log(e.type, e.detail); });
 }
 if (window.WebComponents.ready) init();
 else window.addEventListener('WebComponentsReady', () => setTimeout(init, 100));
