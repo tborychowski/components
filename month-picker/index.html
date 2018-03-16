@@ -10,7 +10,7 @@ year-picker { width: 100px;  }
 <body>
 
 
-<year-picker></year-picker>
+<month-picker></month-picker>
 
 
 <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
@@ -20,7 +20,7 @@ function init () {
 	document.body.style.opacity = 1;
 	console.log('components ready!');
 
-	const el = document.getElementsByTagName('year-picker')[0];
+	const el = document.getElementsByTagName('month-picker')[0];
 
 	el.addEventListener('change', e => { console.log(e.type, e.detail); });
 }
