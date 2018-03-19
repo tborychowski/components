@@ -30,6 +30,7 @@ class monthPicker extends HTMLElement {
 		this.shadowRoot.appendChild(this.templateContent.cloneNode(true));
 		this.el = this.shadowRoot.querySelector('.month-picker');
 		this.inputEl = this.el.querySelector('input');
+		this.setAttribute('tabindex', 0);
 
 		this.el.addEventListener('click', this.onClick.bind(this));
 		if (!this.getAttribute('value')) this.value = new Date().getMonth() + 1;
@@ -58,7 +59,6 @@ class monthPicker extends HTMLElement {
 		selected.forEach(btn => btn.classList.remove('selected'));
 		selected = this.el.querySelector('.month-' + value);
 		if (selected) selected.classList.add('selected');
-		this.fireEvent('change', { value: parseInt(value, 10), month: months[value - 1] });
 	}
 
 	onClick (e) {
@@ -68,6 +68,7 @@ class monthPicker extends HTMLElement {
 		if (monthButton) {
 			const val = monthButton.dataset.value;
 			this.value = val;
+			this.fireEvent('change', { value: parseInt(val, 10), month: months[val - 1] });
 		}
 	}
 

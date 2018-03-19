@@ -42,6 +42,7 @@ class yearPicker extends HTMLElement {
 		this.shadowRoot.appendChild(this.templateContent.cloneNode(true));
 		this.el = this.shadowRoot.querySelector('.year-picker');
 		this.inputEl = this.el.querySelector('input');
+		this.setAttribute('tabindex', 0);
 
 		this.el.addEventListener('click', this.onClick.bind(this));
 		this.inputEl.addEventListener('input', this.onInput.bind(this));
