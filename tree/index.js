@@ -8,10 +8,52 @@ const style = `
 	font: normal 1em sans-serif;
 }
 
+.tree-node { list-style: none; margin: 0; padding: 0; }
+.tree-node ul { margin: 0; position: relative; margin-left: 1em; }
+
+.tree-node ul ul { margin-left: 0.5em; }
+
+.tree-node li {
+	position: relative;
+	margin: 0;
+	color: #000;
+	line-height: 2.1em;
+	padding: 0 1.2em;
+}
+
+.tree-node ul::before,
+.tree-node ul li::before {
+	content: '';
+	position: absolute;
+	display: block;
+}
+
+.tree-node ul::before {
+	top: 0;
+	bottom: 18px;
+	left: 0;
+	width: 0;
+	border-left: 1px solid #000;
+}
+
+.tree-node ul li::before {
+	top: 1em;
+	left: 0;
+	height: 0;
+	border-top: 1px solid #000;
+	margin-top: -1px;
+	width: 0.75em;
+}
+
+
+
+
 .edit-box,
+.btn-new,
 .edit-off,
 .tree.edit .edit-on { display: none; }
 
+.tree.edit .btn-new,
 .tree.edit .edit-box,
 .tree.edit .edit-off { display: block; }
 `;
@@ -20,6 +62,7 @@ const template = `<div class="tree">
 	<div class="edit-toggle">
 		<button class="edit-on">Edit</button>
 		<button class="edit-off">Done</button>
+		<button class="btn-new">New</button>
 	</div>
 	<div class="edit-box">
 		<form class="edit-form">
@@ -29,11 +72,11 @@ const template = `<div class="tree">
 			<button class="btn-save">Save</button>
 			<button type="button" class="btn-del">Del</button>
 		</form>
-		<button class="btn-new">New</button>
 	</div>
 	<div class="tree-content"></div>
 </div>`;
 
+const MAX_LEVEL = 2;
 
 class perfectTree extends HTMLElement {
 
@@ -106,7 +149,7 @@ class perfectTree extends HTMLElement {
 			if (item.items) html.push(this.createTree(item.items));
 			html.push('</li>');
 		}
-		return `<ul class="category-tree">${html.join('')}</ul>`;
+		return `<ul class="tree-node">${html.join('')}</ul>`;
 	}
 
 
@@ -115,7 +158,9 @@ class perfectTree extends HTMLElement {
 		this.treeEl.innerHTML = this.createTree(this.arrayToTree(this._data));
 
 		let html = '<option></option>';
-		html += this._data.map(o => `<option value="${o.id}">${o.name}</option>`).join('');
+		html += this._data
+			.filter(o => o.level < MAX_LEVEL - 1)	// if max_level === 2 -> this should be < 1
+			.map(o => `<option value="${o.id}">${o.name}</option>`).join('');
 		this.formEl.parentId.innerHTML = html;
 	}
 
@@ -134,13 +179,15 @@ class perfectTree extends HTMLElement {
 	}
 
 	// flat array ==> tree
-	arrayToTree (data, parentId = '') {
+	arrayToTree (data, parentId = '', level = 0) {
 		let res = data
 			.filter(i => (i.parentId || '') === parentId)
 			.map(item => {
-				const items = this.arrayToTree(data, item.id);
+				const items = this.arrayToTree(data, item.id, level + 1);
 				const newItem = Object.assign({}, item);
 				if (items.length) newItem.items = items;
+				newItem.level = level;
+				this.modifyCategory(item.id, { level });
 				return newItem;
 			});
 		return res;

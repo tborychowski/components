@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Tree demo</title>
+<style>
+body { transition: opacity .3s ease-out; opacity: 0; }
+</style>
+</head>
+<body>
+
+
+<exp-form></exp-form>
+
+
+<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+<script src="index.js" type="module"></script>
+<script>
+function init () {
+	document.body.style.opacity = 1;
+	console.log('components ready!');
+	const el = document.getElementsByTagName('exp-form')[0];
+
+	el.categories = [
+		{ id: 'child_1', name: 'Child 1' },
+		{ id: 'child_2', name: 'Child 2', items: [
+			{ id: 'grandchild_21', name: 'Grandchild 1', parentId: 'child_2' },
+		]},
+		{ id: 'child_3', name: 'Child 3', items: [
+			{ id: 'grandchild_31', name: 'Grandchild 1', parentId: 'child_3' },
+			{ id: 'grandchild_32', name: 'Grandchild 2', parentId: 'child_3' },
+			{ id: 'grandchild_33', name: 'Grandchild 3', parentId: 'child_3' },
+		]},
+	];
+
+	el.split();
+
+}
+if (window.WebComponents.ready) init();
+else window.addEventListener('WebComponentsReady', () => setTimeout(init, 100));
+</script>
+
+</body>
+</html>
