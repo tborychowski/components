@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
-<title>Tree demo</title>
+<title>Form demo</title>
 <style>
 body { transition: opacity .3s ease-out; opacity: 0; }
+exp-form { width: 500px;  }
 </style>
 </head>
 <body>
 
 
-<exp-form></exp-form>
+<exp-form tabindex="0"></exp-form>
 
 
 <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
@@ -18,8 +19,12 @@ body { transition: opacity .3s ease-out; opacity: 0; }
 function init () {
 	document.body.style.opacity = 1;
 	console.log('components ready!');
+	// **********************************************************************
+
+
 	const el = document.getElementsByTagName('exp-form')[0];
 
+	el.date = '2018-03-20';
 	el.categories = [
 		{ id: 'child_1', name: 'Child 1' },
 		{ id: 'child_2', name: 'Child 2', items: [
@@ -32,7 +37,15 @@ function init () {
 		]},
 	];
 
-	el.split();
+	el.init();
+
+	el.addEventListener('change', res => {
+		console.log(res.type, res.detail.data);
+	});
+
+	el.addEventListener('submit', res => {
+		console.log(res.type, res.detail.data);
+	});
 
 }
 if (window.WebComponents.ready) init();
