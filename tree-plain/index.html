@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Tree demo</title>
+<link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+
+<div id="tree"></div>
+
+<script type="module">
+import Tree from './index.js';
+const el = new Tree('#tree');
+el.data = [
+	{ id: 'child_1', name: 'Child 1' },
+	{ id: 'child_2', name: 'Child 2', items: [
+		{ id: 'grandchild_21', name: 'Grandchild 1', parentId: 'child_2' },
+	]},
+	{ id: 'child_3', name: 'Child 3', items: [
+		{ id: 'grandchild_31', name: 'Grandchild 1', parentId: 'child_3' },
+		{ id: 'grandchild_32', name: 'Grandchild 2', parentId: 'child_3' },
+		{ id: 'grandchild_33', name: 'Grandchild 3', parentId: 'child_3' },
+	]},
+];
+
+el.on('select', e => { console.log(e.type, e.data); });
+el.on('edit', e => { console.log(e.type, e.data); });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Form demo</title>
+<style>
+#form { width: 500px;  }
+</style>
+<link rel="stylesheet" href="./index.css">
+</head>
+<body>
+
+
+<div id="form"></div>
+
+
+<script type="module">
+import ExpForm from './index.js';
+const form = new ExpForm('#form');
+
+form.date = '2018-03-20';
+form.categories = [
+	{ id: 'child_1', name: 'Child 1' },
+	{ id: 'child_2', name: 'Child 2', items: [
+		{ id: 'grandchild_21', name: 'Grandchild 1', parentId: 'child_2' },
+	]},
+	{ id: 'child_3', name: 'Child 3', items: [
+		{ id: 'grandchild_31', name: 'Grandchild 1', parentId: 'child_3' },
+		{ id: 'grandchild_32', name: 'Grandchild 2', parentId: 'child_3' },
+		{ id: 'grandchild_33', name: 'Grandchild 3', parentId: 'child_3' },
+	]},
+];
+
+
+form.on('change', res => {
+	console.log(res.type, res.data);
+});
+
+form.on('submit', res => {
+	console.log(res.type, res.data);
+});
+
+
+</script>
+</body>
+</html>

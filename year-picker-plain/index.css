@@ -1,0 +1,19 @@
+.year-picker {
+	-moz-user-select: none;
+	user-select: none;
+	position: relative;
+	font: normal 1em sans-serif;
+	width: inherit;
+	display: flex;
+}
+
+.year-picker input {
+	appearance: textfield;
+	-webkit-appearance: textfield;
+	-moz-appearance: textfield;
+	text-align: center;
+	font: inherit;
+	border: none;
+	background: none;
+	min-width: 4em;
+}

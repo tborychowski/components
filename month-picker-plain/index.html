@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+
+<div id="month-picker"></div>
+
+
+<script type="module">
+import MonthPicker from './index.js';
+const el = new MonthPicker('#month-picker');
+el.on('change', e => { console.log(e.type, e.data); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<link rel="stylesheet" href="index.css">
+<style>
+#year-picker { width: 150px;  }
+</style>
+</head>
+<body>
+
+
+<div id="year-picker"></div>
+
+<script type="module">
+import YearPicker from './index.js';
+const el = new YearPicker('#year-picker');
+el.on('change', e => { console.log(e.type, e.data); });
+</script>
+
+
+</body>
+</html>
