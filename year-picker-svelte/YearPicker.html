@@ -1,0 +1,46 @@
+<div class="year-picker">
+	<button class="prev-year" title="Previous year" on:click="go(-1)">◀</button>
+	<input type="number" bind:value=value on:input="notify()">
+	<button class="next-year" title="Next year" on:click="go(1)">▶</button>
+</div>
+
+<style>
+.year-picker {
+	-moz-user-select: none;
+	user-select: none;
+	position: relative;
+	font: normal 1em sans-serif;
+	width: inherit;
+	display: flex;
+}
+
+.year-picker input {
+	appearance: textfield;
+	-webkit-appearance: textfield;
+	-moz-appearance: textfield;
+	text-align: center;
+	font: inherit;
+	border: none;
+	background: none;
+	min-width: 4em;
+}
+</style>
+
+<script>
+export default {
+	data () {
+		const value = (new Date()).getFullYear();
+		return { value };
+	},
+	methods: {
+		notify () {
+			this.fire('change', { value: this.get('value') });
+		},
+
+		go (value) {
+			this.set({ value: this.get('value') + value });
+			this.notify();
+		}
+	}
+};
+</script>

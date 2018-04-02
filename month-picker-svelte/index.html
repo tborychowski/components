@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+</head>
+<body>
+
+
+<div id="month-picker"></div>
+
+
+<script type="module">
+import MonthPicker from './MonthPicker.js';
+
+const mp = new MonthPicker({
+	target: document.querySelector('#month-picker'),
+	data: { date: '2018-01' }
+});
+
+mp.on('change', e => {
+	console.log(e);
+});
+</script>
+
+</body>
+</html>

@@ -2,14 +2,16 @@
   "name": "perfect-components",
   "version": "1.0.0",
   "description": "web components",
-  "scripts": { },
+  "scripts": {},
   "author": "Tom",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/tborychowski/components.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "svelte-cli": "^2.2.0"
+  },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^1.1.0"
   }

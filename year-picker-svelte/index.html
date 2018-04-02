@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<style>
+#year-picker { width: 150px;  }
+</style>
+</head>
+<body>
+
+
+<div id="year-picker"></div>
+
+
+<script type="module">
+import YearPicker from './YearPicker.js';
+
+const el = new YearPicker({
+	target: document.querySelector('#year-picker'),
+	data: { date: '2018-01' }
+});
+
+el.on('change', e => { console.log(e); });
+</script>
+
+</body>
+</html>

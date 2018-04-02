@@ -1,0 +1,35 @@
+<div class="month-picker">
+	{{#each months as month, i}}
+		<button class="month {{i + 1 === selected ? 'selected' : ''}}"
+			on:click="onclick(i + 1)">{{month.substr(0, 3)}}</button>
+	{{/each}}
+</div>
+
+<style>
+.month-picker {
+	-moz-user-select: none;
+	user-select: none;
+	position: relative;
+	font: normal 1em sans-serif;
+	width: inherit;
+	display: flex;
+}
+.month { flex: 1; }
+.selected { color: blue; font-weight: bold; }
+</style>
+
+<script>
+export default {
+	data () {
+		const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		const selected = (new Date()).getMonth() + 1;
+		return { months, selected };
+	},
+	methods: {
+		onclick (selected) {
+			this.set({ selected });
+			this.fire('change', { selected });
+		}
+	}
+};
+</script>
