@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<link rel="stylesheet" href="index.css">
+<style>year-picker { width: 100px;  }</style>
+</head>
+<body>
+
+
+<year-picker></year-picker>
+
+
+<script src="index.js" type="module"></script>
+<script>
+const el = document.querySelector('year-picker');
+el.addEventListener('change', e => console.log(e.type, e.detail));
+</script>
+
+</body>
+</html>

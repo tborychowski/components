@@ -29,7 +29,6 @@ class monthPicker extends HTMLElement {
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(this.templateContent.cloneNode(true));
 		this.el = this.shadowRoot.querySelector('.month-picker');
-		this.inputEl = this.el.querySelector('input');
 		this.setAttribute('tabindex', 0);
 
 		this.el.addEventListener('click', this.onClick.bind(this));

@@ -7,15 +7,15 @@
 <body>
 
 
-<div id="month-picker"></div>
+<div id="picker"></div>
 
 
 <script type="module">
-import MonthPicker from './MonthPicker.js';
+import MonthPicker from './YearMonthPicker.js';
 
-const mp = new MonthPicker({
-	target: document.querySelector('#month-picker'),
-	data: { date: '2018-01' }
+window.mp = new MonthPicker({
+	target: document.querySelector('#picker'),
+	data: { year: 2019, month: 1 }
 });
 
 mp.on('change', e => {

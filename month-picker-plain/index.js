@@ -2,12 +2,6 @@ import {Component} from './component.js';
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-function btnTemplate (month, i) {
-	return `<button class="month month-${i + 1}"
-		data-value="${i + 1}">${month.substr(0, 3)}</button>`;
-}
-
-
 
 export default class MonthPicker extends Component {
 
@@ -16,10 +10,14 @@ export default class MonthPicker extends Component {
 		this.value = new Date().getMonth() + 1;
 	}
 
-	template () {
-		return months.map(btnTemplate).join('');
+	buttonTemplate (month, i) {
+		return `<button class="month month-${i + 1}"
+			data-value="${i + 1}">${month.substr(0, 3)}</button>`;
 	}
 
+	template () {
+		return months.map(this.buttonTemplate).join('');
+	}
 
 	set value (value) {
 		this._value = value;
@@ -38,9 +36,9 @@ export default class MonthPicker extends Component {
 	onClick (e) {
 		const btn = e.target.closest('.month');
 		if (btn) {
-			const val = btn.dataset.value;
-			this.value = val;
-			this.fire('change', { value: parseInt(val, 10), month: months[val - 1] });
+			const value = parseInt(btn.dataset.value, 10);
+			this.value = value;
+			this.fire('change', { value, month: months[value - 1] });
 		}
 	}
 

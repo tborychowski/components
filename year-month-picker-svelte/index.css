@@ -1,0 +1,23 @@
+.year-month-picker {
+	-moz-user-select: none;
+	user-select: none;
+	font: normal 1em sans-serif;
+	display: flex;
+	font-size: 14px;
+	height: 24px;
+	align-items: stretch;
+}
+
+.year-month-picker .btn-today { margin-right: 10px; }
+.year-month-picker .btn-prev { margin-right: 10px; }
+.year-month-picker .btn-next { margin-left: 10px; }
+.year-month-picker .month { width: 4ch; }
+
+.year-month-picker .month,
+.year-month-picker .year {
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.is-today .btn-today { opacity: .5; pointer-events: none; }

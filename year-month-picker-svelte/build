@@ -1,0 +1,2 @@
+#! /bin/sh
+svelte compile -d -m inline -i YearMonthPicker.html -o YearMonthPicker.js
