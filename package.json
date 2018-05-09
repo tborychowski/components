@@ -10,9 +10,9 @@
     "url": "https://github.com/tborychowski/components.git"
   },
   "dependencies": {
-    "svelte-cli": "^2.2.0"
+    "svelte-cli": "3.0.0"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "^1.1.0"
+    "@webcomponents/webcomponentsjs": "^1.2.0"
   }
 }

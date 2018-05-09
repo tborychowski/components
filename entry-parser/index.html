@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+
+<div id="element"></div>
+
+
+<script type="module">
+import EntryParser from './EntryParser.js';
+
+const mp = new EntryParser({
+	target: document.querySelector('#element'),
+	data: {
+		groups: ['Groceries', 'Household', 'Fuel', 'Wine', 'Equipment']
+	}
+});
+
+mp.on('change', e => {
+	console.dir(e);
+});
+
+mp.set({ value: `asd  equipment 60
+fuel 20
+wine 10 and beers
+`});
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+#! /bin/sh
+../node_modules/.bin/svelte compile EntryParser.html -o EntryParser.js
