@@ -4,7 +4,7 @@
   "description": "web components",
   "scripts": {},
   "author": "Tom",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
     "url": "https://github.com/tborychowski/components.git"
